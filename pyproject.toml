@@ -1,0 +1,17 @@
+[project]
+name = "autoprompt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "argilla>=1.0,<2.0",
+    "easydict>=1.13",
+    "faiss-cpu>=1.13.0",
+    "langchain>=0.1,<0.2",
+    "langchain-community>=0.0.38",
+    "langchain-core>=0.1.53",
+    "langchain-openai>=0.1.7",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+]

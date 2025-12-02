@@ -155,7 +155,44 @@ python run_generation_pipeline.py \
     --prompt "Write a good and comprehensive movie review about a specific movie." \
     --task_description "Assistant is a large language model that is tasked with writing movie reviews."
 ```
-For more information, refer to our [generation task example](docs/examples.md#generating-movie-reviews-generation-task). 
+For more information, refer to our [generation task example](docs/examples.md#generating-movie-reviews-generation-task).
+
+<br />
+
+#### Benchmark optimization (optimize-only mode)
+If you already have an annotated dataset and want to skip sample generation and annotation, use the benchmark optimization script. This mode runs a pure optimization loop: **predict → evaluate → refine**.
+
+Your dataset should be a CSV file with `text` and `annotation` columns:
+```csv
+text,annotation
+"The movie was absolutely fantastic!",Yes
+"Waste of time and money.",No
+```
+
+Run the optimization:
+```bash
+python run_benchmark_optimization.py \
+    --dataset path/to/your_data.csv \
+    --prompt "Is this movie review positive? Answer Yes or No." \
+    --task_description "Classify movie reviews as positive or negative." \
+    --labels Yes No \
+    --num_steps 10 \
+    --output results.json
+```
+
+Arguments:
+- `--dataset` (required): Path to CSV with `text` and `annotation` columns
+- `--prompt`: Initial prompt to optimize (interactive if omitted)
+- `--task_description`: Task description (interactive if omitted)
+- `--labels`: Label schema (default: Yes No)
+- `--num_steps`: Number of optimization iterations (default: 10)
+- `--output`: Output JSON file for results (default: benchmark_results.json)
+- `--config`: Configuration file (default: config/config_benchmark.yml)
+
+This is useful when:
+- You already have labeled benchmark data
+- You want faster iteration without sample generation
+- You're fine-tuning a prompt for a specific dataset
 
 <br />
 

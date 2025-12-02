@@ -1,0 +1,54 @@
+use_wandb: False
+
+dataset:
+    name: 'benchmark'
+    records_path: null
+    initial_dataset: ''
+    label_schema: ["Yes", "No"]  # Override via CLI --labels
+    max_samples: 1000
+    semantic_sampling: False
+
+# No annotator - using existing annotations from CSV
+annotator:
+    method: ''
+
+# Predictor runs each iteration with the current prompt
+predictor:
+    method: 'llm'
+    config:
+        llm:
+            name: 'gpt-4.1'
+            type: 'azure'
+            model_kwargs: {"seed": 220}
+        num_workers: 5
+        prompt: 'prompts/predictor_completion/prediction.prompt'
+        mini_batch_size: 1
+        mode: 'prediction'
+
+meta_prompts:
+    folder: 'prompts/meta_prompts_classification'
+    num_err_prompt: 2
+    num_err_samples: 2
+    history_length: 3
+    num_generated_samples: 0  # No sample generation
+    num_initialize_samples: 0
+    samples_generation_batch: 0
+    num_workers: 5
+    warmup: 1
+
+eval:
+    function_name: 'accuracy'
+    num_large_errors: 4
+    num_boundary_predictions: 0
+    error_threshold: 0.5
+
+# Meta-prompt LLM for refinement (use strong model)
+llm:
+    name: 'gpt-4.1'
+    type: 'azure'
+    temperature: 0.8
+
+stop_criteria:
+    max_usage: 10  # In $ for OpenAI models
+    patience: 3    # Stop if no improvement for N iterations
+    min_delta: 0.01
